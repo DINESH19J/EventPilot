@@ -71,6 +71,8 @@ module eventpilot_tb;
     endtask
 
     initial begin
+	$dumpfile("eventpilot.vcd");
+        $dumpvars(0, eventpilot_tb);
         clk = 1'b0;
         rst_n = 1'b0;
         event_req = 4'b0000;
