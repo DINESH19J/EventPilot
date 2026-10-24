@@ -95,9 +95,6 @@ This comparison helps demonstrate how a hardware description written in Verilog 
 <img width="732" height="506" alt="33" src="https://github.com/user-attachments/assets/80373538-f5fe-40d6-9157-30f41c8c0a09" />
 <img width="714" height="574" alt="44" src="https://github.com/user-attachments/assets/dc492d82-2409-4228-9012-ae3e59fd679d" />
 
-# 4. Pre-Implementation Static Timing Analysis (Pre-STA)
-
-![EventPilot Pre-STA Analysis](04_pre_sta.png)
 
 ## What Is Happening?
 
