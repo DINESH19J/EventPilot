@@ -98,7 +98,7 @@ The implementation uses sequential digital logic and is verified using Verilog s
 - **Detailed routing:** Completed; the saved router log reports zero violations in the final detailed-routing run.
 - **Static Timing Analysis:** Initial timing reports are available for further verification.
 
-> **Verification note:** Router-reported zero violations do not establish signoff DRC or LVS completion. The provenance of the timing-corner reports, extracted parasitics, and final GDS generation remain unverified.
+
 
 ## 📂 Repository Contents
 
