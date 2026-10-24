@@ -1,0 +1,157 @@
+# 🚀 EventPilot: Priority-Aware Event Processing Controller Using Verilog HDL
+
+<p align="center">
+  <strong>A Digital Design and ASIC Physical Implementation Project</strong>
+</p>
+
+---
+
+## 📌 Introduction
+
+**EventPilot** is a digital event-processing controller designed using Verilog Hardware Description Language (HDL). It processes multiple event requests and selects an output according to priority-based decision logic.
+
+The project demonstrates the journey from RTL design and functional verification to logic synthesis, physical design, routing, and Static Timing Analysis (STA), using open-source digital-design tools and the SkyWater SKY130 HD standard-cell technology.
+
+## 🎯 Project Objectives
+
+- Design a priority-aware event-processing controller using Verilog HDL.
+- Verify functional behavior through a dedicated testbench.
+- Synthesize RTL into a mapped digital circuit.
+- Implement the physical-design flow from floorplanning to detailed routing.
+- Analyze setup and hold timing using Static Timing Analysis.
+- Document the design flow, verification results, and implementation limitations.
+
+## ⚙️ Design Overview
+
+EventPilot accepts multiple event requests and produces an encoded output based on the controller's priority logic.
+
+**Basic processing flow:**
+
+```text
+Event Requests
+      |
+      v
+Priority-Based Processing Logic
+      |
+      v
+Sequential Control and State Updates
+      |
+      v
+Encoded Output
+```
+
+The implementation uses sequential digital logic and is verified using Verilog simulation.
+
+## 🔄 ASIC Implementation Flow
+
+```text
+       Verilog RTL
+            |
+            v
+    Testbench Simulation
+            |
+            v
+      Logic Synthesis
+            |
+            v
+       Floorplanning
+            |
+            v
+         Placement
+            |
+            v
+ Clock-Tree Synthesis (CTS)
+            |
+            v
+ Power Distribution Network
+            |
+            v
+      Global Routing
+            |
+            v
+     Detailed Routing
+            |
+            v
+ Static Timing Analysis (STA)
+```
+
+## 🛠️ Tools and Technologies
+
+| Tool / Technology | Purpose |
+|---|---|
+| Verilog HDL | RTL design |
+| Verilog Testbench | Functional verification |
+| Yosys | Logic synthesis |
+| OpenROAD | ASIC physical-design implementation |
+| OpenSTA | Static Timing Analysis |
+| SkyWater SKY130 HD | Standard-cell technology |
+| KLayout | Layout viewing and inspection |
+
+## 🧪 Verification and Implementation Status
+
+- **Functional verification:** The recorded testbench completed 17 checks successfully.
+- **Logic synthesis:** Completed.
+- **Floorplanning and placement:** Completed.
+- **Clock-tree synthesis:** Completed.
+- **Power distribution network:** Completed.
+- **Global routing:** Completed.
+- **Detailed routing:** Completed; the saved router log reports zero violations in the final detailed-routing run.
+- **Static Timing Analysis:** Initial timing reports are available for further verification.
+
+> **Verification note:** Router-reported zero violations do not establish signoff DRC or LVS completion. The provenance of the timing-corner reports, extracted parasitics, and final GDS generation remain unverified.
+
+## 📂 Repository Contents
+
+| File | Description |
+|---|---|
+| `eventpilot.v` | EventPilot RTL design |
+| `eventpilot_tb.v` | Verilog testbench |
+| `eventpilot_mapped.v` | Synthesized mapped netlist |
+| `eventpilot_netlist.v` | Gate-level netlist |
+| `eventpilot.sdc` | Timing constraints |
+| `eventpilot_floorplan.tcl` | Floorplanning script |
+| `eventpilot_place.tcl` | Placement script |
+| `eventpilot_pdn.tcl` | Power distribution configuration |
+| `run_global_route.tcl` | Global routing script |
+| `run_detailed_route.tcl` | Detailed routing script |
+| `sta.tcl` | Static Timing Analysis script |
+| `eventpilot_detailed_route.def` | Detailed-routing design database |
+| `sta_report.txt` | Earlier STA report |
+| `sta_post_route.log` | Post-route STA execution log |
+| `SS_STA_Report.txt` | SS-labeled timing report |
+| `FF_STA_Report.txt` | FF-labeled timing report |
+| `TT_STA_Report.txt` | TT-labeled timing report |
+
+## 📊 Project Documentation
+
+Additional documentation will explain the implementation screenshots and timing reports.
+
+- **Screenshots and Physical-Design Walkthrough:** `docs/SCREENSHOTS.md`
+- **Pre-STA and Post-STA Analysis:** `reports/STA_REPORTS.md`
+
+These links will become available when the corresponding files are added to the repository.
+
+## 🎓 Applications
+
+Priority-aware event processing is relevant to digital control systems where multiple requests may need to be handled according to priority.
+
+Potential application areas include:
+- Interrupt and request arbitration.
+- Digital control systems.
+- Event-handling controllers.
+- Educational ASIC design and verification.
+
+These are potential application areas, not claims that EventPilot has already been deployed in a real-world system.
+
+## 👨‍💻 Project Information
+
+**Project Name:** EventPilot  
+**Design Language:** Verilog HDL  
+**Implementation Platform:** OpenROAD  
+**Technology:** SkyWater SKY130 HD  
+
+---
+
+<p align="center">
+  <strong>EventPilot — From RTL Design to ASIC Physical Implementation</strong>
+</p>
