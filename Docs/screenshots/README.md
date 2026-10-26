@@ -4,7 +4,7 @@
 
 ## 📌 Project Overview
 
-EventPilot is a digital controller designed to process multiple event requests according to a defined priority scheme. This project demonstrates the digital design and ASIC implementation workflow, starting with functional simulation and RTL synthesis and continuing through physical design and static timing analysis (STA).
+EventPilot is a digital controller designed to process multiple event requests according to a defined priority scheme. This project demonstrates the digital design and ASIC implementation workflow, starting with functional simulation and RTL synthesis and continuing through physical design, static timing analysis (STA), GDS generation, and design-rule checking with the KLayout SKY130 deck.
 
 This document presents screenshots from the actual implementation workflow. Each section explains the operation performed, how the stage is implemented, the observed result, and its importance in the overall design.
 
@@ -339,9 +339,58 @@ Post-STA helps assess timing after physical implementation, when interconnect an
 - [TT Corner Report](../reports/TT_STA_Report.txt)
 - [FF Corner Report](../reports/FF_STA_Report.txt)
 
-# 12. Overall Implementation Summary
+---
 
-EventPilot demonstrates a digital design and ASIC implementation workflow covering functional simulation, logic synthesis, physical design, and static timing analysis.
+# 12. GDS Generation and DRC (KLayout)
+
+<img width="1360" height="687" alt="image" src="https://github.com/user-attachments/assets/755ceca2-ed0d-4f50-ae09-21a4dd3c956d" />
+
+<img width="1360" height="687" alt="Capture2" src="https://github.com/user-attachments/assets/1c18c76c-c89b-4aa8-b599-07c4d148c589" />
+
+
+### 🔍 What Is Happening?
+
+The routed EventPilot design is converted into a GDS layout file. The GDS contains the physical geometry of the standard cells, the signal routing, and the power grid within the 100 × 100 µm die.
+
+### ⚙️ How Is It Implemented?
+
+OpenROAD and Yosys in this setup have no GDS writer, and the Magic SKY130 technology was not installed. The GDS was therefore generated with KLayout in batch mode (`pya`):
+
+1. The detailed-route DEF (`eventpilot_detailed_route.def`) and the SKY130 HD LEF were read using the KLayout SKY130 layer map (`sky130.lyt`).
+2. This first pass produced routing and pin geometry only, because the LEF cells are abstracts without transistor layers.
+3. Each standard-cell abstract was then replaced with its real SKY130 HD cell GDS (11 cell masters replaced, none missing).
+4. The result was written as the final GDS.
+
+The scripts are available in [`scripts/`](../../scripts/), for example [`merge.py`](../../scripts/merge.py).
+
+### ✅ Result and Observation
+
+**Output:** [`gds/eventpilot.gds`](../../gds/eventpilot.gds)
+
+Checks performed on the final GDS:
+
+- The die is 100 × 100 µm, matching the DEF `DIEAREA`.
+- The top cell contains 18 standard-cell instances, matching the DEF component count.
+- Front-end layers (diff, poly, nwell, licon, nsdm, psdm) are present inside the cells.
+- Routing layers li1 through met5 are present, along with the power-grid vias (via3 and via4).
+- The KLayout SKY130 DRC deck (`sky130.lydrc`) reported **0 violations** ([report](../../drc/eventpilot_drc.lyrdb)).
+- To confirm the deck detects errors, it was also run on the provided `test_violators.gds`, where it reported 48 violations.
+
+### 🎯 Why Is This Stage Important?
+
+The GDS is the layout file format used to describe the physical design for fabrication-oriented flows. Generating it from the routed design and running a design-rule check shows that the implemented layout is geometrically consistent with the SKY130 rules covered by the deck.
+
+### ⚠️ Limitations
+
+- The DRC result comes from the KLayout SKY130 deck. It is not the foundry's official signoff DRC.
+- LVS was not run, so the layout has not been formally compared against the netlist.
+- Timing results in this document come from the STA runs on the routed design, not from an extraction of this GDS.
+
+---
+
+# 13. Overall Implementation Summary
+
+EventPilot demonstrates a digital design and ASIC implementation workflow covering functional simulation, logic synthesis, physical design, static timing analysis, and GDS generation with design-rule checking.
 
 | Stage | Purpose | Recorded observation |
 |---|---|---|
@@ -356,28 +405,31 @@ EventPilot demonstrates a digital design and ASIC implementation workflow coveri
 | Global routing | Establish preliminary signal paths | Global-routing screenshot or output |
 | Detailed routing | Generate detailed signal connections | Saved log reports zero router-reported violations |
 | Post-STA | Evaluate timing after physical implementation | Post-STA report available |
+| GDS generation (KLayout) | Produce the physical layout file | `gds/eventpilot.gds`: 100 × 100 µm die, 18 cell instances, li1–met5 routing and PDN present |
+| DRC (KLayout SKY130 deck) | Check layout geometry against design rules | 0 violations reported; deck validated on `test_violators.gds` (48 violations) |
 
 The table summarizes the stages and recorded observations. The precise completion status of each stage should be supported by its actual screenshot or tool log.
 
 ---
 
-# 13. Verification Notes and Limitations
+# 14. Verification Notes and Limitations
 
 - Simulation results apply to the scenarios exercised by the testbench.
 - Timing results apply to the constraints, libraries, corners, and parasitic assumptions used for the corresponding analysis.
 - Pre-STA and post-STA results should only be compared after checking their analysis conditions.
 - Zero router-reported violations is not equivalent to passing signoff DRC.
-- Complete GDS generation, signoff DRC, LVS, and final extracted-parasitic timing analysis have not been confirmed in the available project records.
+- A GDS was generated from the routed DEF using KLayout and the SKY130 HD standard-cell GDS, and it passed the KLayout SKY130 DRC deck with 0 violations.
+- That DRC result is not foundry signoff DRC. LVS, Magic-based signoff DRC, and final extracted-parasitic timing analysis have not been performed.
 - All screenshots and report links should point to genuine outputs from the actual implementation workflow.
 
 ---
 
 # Conclusion
 
-EventPilot demonstrates the progression from Verilog-based functional design to synthesis, physical implementation, and timing analysis.
+EventPilot demonstrates the progression from Verilog-based functional design to synthesis, physical implementation, timing analysis, and layout generation.
 
-The recorded work includes a simulation run with 17 passing test checks, physical-design implementation stages, detailed routing with zero router-reported violations, and available static timing analysis reports.
+The recorded work includes a simulation run with 17 passing test checks, physical-design implementation stages, detailed routing with zero router-reported violations, available static timing analysis reports, and a GDS layout that reported 0 violations in the KLayout SKY130 DRC deck.
 
-The final signoff status depends on completing and verifying the required layout-generation and verification steps.
+Final signoff status would additionally require LVS, signoff DRC, and extracted-parasitic timing analysis, which have not been performed.
 
 **EventPilot — From RTL Design to ASIC Physical Implementation**
