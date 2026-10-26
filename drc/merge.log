@@ -1,0 +1,9 @@
+dbu: 0.001 | cells replaced: 11 | missing: []
+diff (65, 20) PRESENT
+poly (66, 20) PRESENT
+nwell (64, 20) PRESENT
+licon (66, 44) PRESENT
+nsdm (93, 44) PRESENT
+psdm (94, 20) PRESENT
+BBOX um: (0,0;100,100)
+WROTE eventpilot.gds

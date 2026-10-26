@@ -1,0 +1,7 @@
+tech lef_files before: []
+TOP: eventpilot | DEF components: 18
+top instances: 538 | unique cells: 19
+std cells with NO geometry: 0 []
+BBOX um: (0,0;100,100)
+layers with shapes: [(67, 5), (67, 16), (67, 20), (67, 44), (68, 5), (68, 16), (68, 20), (68, 44), (69, 5), (69, 16), (69, 20), (69, 44), (70, 20), (70, 44), (71, 20), (71, 44), (72, 20), (235, 4)]
+WROTE eventpilot.gds

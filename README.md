@@ -155,3 +155,20 @@ These are potential application areas, not claims that EventPilot has already be
 <p align="center">
   <strong>EventPilot — From RTL Design to ASIC Physical Implementation</strong>
 </p>
+
+## 🧱 GDS Generation and DRC
+
+OpenROAD and Yosys in this setup have no GDS writer, and the Magic SKY130 technology was not installed, so the GDS was produced with KLayout in batch mode (`pya`).
+
+**Method:** the detailed-route DEF (`eventpilot_detailed_route.def`) and the SKY130 HD LEF were read with the KLayout SKY130 layer map (`sky130.lyt`). Each standard-cell abstract was then replaced with its real SKY130 HD cell GDS (`scripts/merge.py`).
+
+**Output:** `gds/eventpilot.gds`
+
+**Checks performed**
+- Die size 100 × 100 µm, matching the DEF DIEAREA.
+- 18 standard-cell instances, matching the DEF components.
+- Front-end layers (diff, poly, nwell, licon, nsdm, psdm) present inside the cells.
+- Routing layers li1 through met5 and the power-grid vias present.
+- KLayout SKY130 DRC (`sky130.lydrc`): 0 violations (`drc/eventpilot_drc.lyrdb`). The deck was validated on the provided `test_violators.gds`, where it reported 48 violations.
+
+**Not performed:** LVS and Magic-based signoff DRC. This is a KLayout DRC result, not a foundry signoff claim.
